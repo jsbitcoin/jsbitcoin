@@ -1,7 +1,8 @@
-jsbitcoin
+JsBitcoin
 =========
 
-JsBitcoin website
-http://www.jsbitcoin.com
+JsBitcoin is a secure deterministic Bitcoin Wallet written in JavaScript.
 
+Website:
+http://jsbitcoin.com
 
