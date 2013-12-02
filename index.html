@@ -1,0 +1,534 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JsBitcoin - Secure Bitcoin Wallet</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Deterministic Bitcoin Wallet" name="description">
+    <meta content="JsBitcoin" name="JsBitcoin">
+    
+    <link href="jsbitcoin.min.css" rel="stylesheet">
+
+    <script src="jsbitcoin.min.js"></script>
+    <link href="favicon.png" rel="icon" type="image/png">
+  </head>
+  <body onClick="rng_seed_time();" onKeyPress="rng_seed_time();">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse"> 
+          <span class="icon-bar"></span> <span class="icon-bar"></span> 
+          <span class="icon-bar"></span> 
+          </a> 
+          <a class="brand" href="/">JsBitcoin</a> 
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active">
+                <a id="home" href="#">Home</a>
+              </li>
+              <li>
+                <a id="verif" href="#">Verify</a>
+              </li>
+              <li>
+                <a id="faq" href="#">About</a>
+              </li>
+            </ul>
+            <ul class="nav pull-right">
+              <li id="logout-menu">
+                <a id="logout" href="#">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Home Page -->
+      <div id="logon">
+        <div id="header">
+          <h1>The most secure online Bitcoin wallet.</h1>
+          <div class="well" id="form-well">
+            <form>
+              <input id="password" placeholder="Enter your JsBitcoin 12 word passphrase." value="" class="input-medium" type="password" /><input id="password-t" placeholder="Enter your JsBitcoin 12 word passphrase." value="" class="input-medium" type="text" style="width: 320px; display: none;"/>
+              <input id="open-sesame" disabled data-toggle="collapse" data-target="#create-keys" class="btn disabled" value="Open Wallet" />
+              <input id="generate-password" class="btn btn-success" data-toggle="collapse" data-target="#create-wallet" value="Start a new wallet" />
+            </form>
+            <div id="create-keys" class="collapse">
+              <div class="progress">
+                <div class="bar" id="seed-progress" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div id="create-wallet" class="collapse">
+              <h4>To use JsBitcoin you need a passphrase.</h4>
+              <p>We have created a passphrase for you in the box below. Write 
+                your passphrase down and keep it safe.
+              </p>
+              <p>
+                <input id="generated" readonly value="" class="input-medium" type="text" />
+                <button class="btn" id="regenerate-password" data-toggle="tooltip" title="Click to generate another random passphrase." type="button"><i class="icon-repeat"></i></button>
+              </p>
+              <p>Make sure no-one is near you when you use this passphrase. 
+                If anyone sees your passphrase, or gets it from you, they can steal your Bitcoins.
+              </p>
+              <p><strong><small class="text-info">We use Passphrases because they are much more 
+              secure than passwords.</small></strong></p>
+            </div>
+          </div>
+          <h2>We don't store your Bitcoins locally or on our servers.</h2>
+        </div>
+        
+        <div class="container">
+          <h3 class="sales-title"></h3>
+          <h4 class="sales-subtitle">Deterministic online wallet with low payment fees (0.0005 BTC).</h4>
+          <div class="row">
+            <div class="span4">
+              <h4><i class="icon-ok-sign"></i> We are determined.</h4>
+              <p>JsBitcoin is an online <a href="https://en.bitcoin.it/wiki/Deterministic_wallet">deterministic wallet</a>. 
+              Your passphrase is turned into a number which is then turned into Bitcoin Addresses. 
+              </p>
+              
+              <p>Your passphrase is your wallet access and wallet backup.</p> 
+            </div>
+            <div class="span4">
+              <h4><i class="icon-ok-sign"></i> We are a zero footprint wallet.</h4>
+              <p>
+                We don't store your Bitcoins locally or on our servers, only in your browser memory. 
+                No trace is left on your device once you logout of your session.</p> 
+              <p> 
+              Thiefs have fewer angles of attack with JsBitcoin.
+              </p>
+            </div>
+            <div class="span4">
+              <h4><i class="icon-ok-sign"></i> We are using 128bit passphrases.</h4>
+              <p>According to "<a href="http://www.grc.com/haystack.htm">how big is your haystack?</a>" Our passphrases would take 
+              <em>trillions of 
+               centuries</em> to break under a massive cracking scenario. </p>
+              <p>Your passphrase is turned into a 128bit key which is then stretched into 10 bitcoin addresses.</p>
+            </div>
+          </div> 
+          <hr />
+          <h3 class="sales-title">We will do everything we can to protect your Bitcoins.</h3>
+          <h4 class="sales-subtitle">However you also need to take responsibility and follow these guidelines.</h4>
+          <div class="row">
+            <div class="span4">
+              <h4><i class="icon-ban-circle"></i> Never give out your passphrase.</h4>
+              <p>There are several ways thiefs will try and get your passphrase. 
+              These attacks apply to all Bitcoin wallets so read up and be safe.
+              </p>
+
+              <ol>
+                <li>
+                  <a href="http://en.wikipedia.org/wiki/Phishing">Phishing</a>
+                  Always make sure you are on the jsbitcoin.com address and never click links in emails.
+                </li>
+                <li>
+                  <a href="http://en.wikipedia.org/wiki/Social_engineering_(security)">Social engineering</a>
+                  Be very careful about what you install on the devices you own.
+                </li>
+                <li>
+                  Watch out for <a href="http://en.wikipedia.org/wiki/Malware">Malware</a>
+                  including <a href="http://en.wikipedia.org/wiki/Keystroke_logging">Keyloggers</a>
+                  or malicious software often disguised as a genuine piece of software.
+                </li>
+              </ol>
+            </div>
+            <div class="span4">
+              <h4><i class="icon-ban-circle"></i> Consider multiple passphrases.</h4>
+              <p>Think about passphrases the way you keep money in real life, 
+              not all in one place. For example.</p>
+
+              <ul>
+                <li><strong><small class="text-info">A day to day passphrase</small></strong>. 
+                You could store a small amount of 
+                Bitcoins here so you don't lose all your Bitcoins if it is compromised. 
+                Write the passphrase down and carry it in your wallet.</li>
+
+                <li><strong><small class="text-info">A Bank account style passphrase</small></strong>. One that you only use in a safe environment, 
+                i.e. a computer with good virus protection. Hold moderate amounts of Bitcoins here.</li>
+
+                <li><strong><small class="text-info">A savings passphrase</small></strong>. A passphrase you created in cold storage. 
+                Be very careful when you use this password.</li>
+              </ul>
+            </div>
+            <div class="span4">
+              <h4><i class="icon-ban-circle"></i> Never lose your passphrases.</h4>
+              <p><strong><span class="text-error">Without the passphrase your coins are gone</span></strong>. 
+              There is no way to retrieve JsBitcoin wallets 
+              without the passphrase.</p> 
+              <p>The best way to keep passphrases safe is... </p> 
+              
+              <ul>
+                <li>Write them down</li>
+                <li>keep them somewhere secure.</li> 
+              </ul>
+            </div>
+            
+          </div>
+          
+        </div>
+        <br><br>
+      </div>
+    <!-- My Addresses -->
+    <div class="container">
+      <div id="site" class="tab-pane fade in ">
+        <div class="row">
+          <div class="span3">
+            <ul class="nav nav-list">
+              <li class="nav-header">Wallet Options</li>
+              <li class="active"><a href="#" id="your-addresses-nav"><i class="icon-align-justify"></i>Your Addresses</a></li>
+              <li><a href="#" id="make-payment-nav"><i class="icon-share"></i>Make a Payment</a></li>
+              <li><a href="#" id="sign-msg-nav"><i class="icon-ok"></i>Sign Message</a></li>
+              <li><a href="#" id="wallet-backup-nav"><i class="icon-key"></i>Wallet Backup</a></li>
+            </ul>
+          </div>
+          <div id="your-addresses" class="span9">
+            <legend>Your Bitcoin Addresses</legend><br>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Public Address</th>
+                  <th>Balance</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tr>
+                <td><a id="address0"></a></td>
+                <td><span><strong id="balance0">&nbsp;</strong></span></td>
+                <td><i id="qrcode0" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp0" class="icon-share"></i>&nbsp;&nbsp;<i id="sg0" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address1"></a></td>
+                <td><span><strong id="balance1">&nbsp;</strong></span></td>
+                <td><i id="qrcode1" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp1" class="icon-share"></i>&nbsp;&nbsp;<i id="sg1" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address2"></a></td>
+                <td><span><strong id="balance2">&nbsp;</strong></span></td>
+                <td><i id="qrcode2" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp2" class="icon-share"></i>&nbsp;&nbsp;<i id="sg2" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address3"></a></td>
+                <td><span><strong id="balance3">&nbsp;</strong></span></td>
+                <td><i id="qrcode3" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp3" class="icon-share"></i>&nbsp;&nbsp;<i id="sg3" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address4"></a></td>
+                <td><span><strong id="balance4">&nbsp;</strong></span></td>
+                <td><i id="qrcode4" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp4" class="icon-share"></i>&nbsp;&nbsp;<i id="sg4" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address5"></a></td>
+                <td><span><strong id="balance5">&nbsp;</strong></span></td>
+                <td><i id="qrcode5" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp5" class="icon-share"></i>&nbsp;&nbsp;<i id="sg5" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address6"></a></td>
+                <td><span><strong id="balance6">&nbsp;</strong></span></td>
+                <td><i id="qrcode6" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp6" class="icon-share"></i>&nbsp;&nbsp;<i id="sg6" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address7"></a></td>
+                <td><span><strong id="balance7">&nbsp;</strong></span></td>
+                <td><i id="qrcode7" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp7" class="icon-share"></i>&nbsp;&nbsp;<i id="sg7" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address8"></a></td>
+                <td><span><strong id="balance8">&nbsp;</strong></span></td>
+                <td><i id="qrcode8" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp8" class="icon-share"></i>&nbsp;&nbsp;<i id="sg8" class="icon-ok"></i></td>
+              </tr>
+              <tr>
+                <td><a id="address9"></a></td>
+                <td><span><strong id="balance9">&nbsp;</strong></span></td>
+                <td><i id="qrcode9" class="icon-qrcode"></i>&nbsp;&nbsp;<i id="mp9" class="icon-share"></i>&nbsp;&nbsp;<i id="sg9" class="icon-ok"></i></td>
+              </tr>
+            </table>
+            <br>
+            <span id="tx-hist"></span>
+          </div>
+          <div class="span9" id="tx">
+            <legend>Make a Payment</legend><br>
+            <form action="/" class="form-vertical" method="get">
+              <fieldset>
+                <div class="control-group form-hide">
+                  <label class="control-label" for="txSec">Private Key</label> 
+                  <div class="controls"> 
+                    <input class="span5" id="txSec" type="text"> 
+                    <span class="help-inline errormsg"></span> 
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="ddaddrt">Source Address</label> 
+                  <div class="controls">
+                    <div class="btn-group">
+                <div class="input-append"><input class="span4" id="ddaddrt" readonly type="text" data-toggle="dropdown"> <a class="add-on btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>  
+                <ul class="dropdown-menu">
+                  <li><a id="ddaddr0" href="#"></a></li>
+                  <li><a id="ddaddr1" href="#"></a></li>
+                  <li><a id="ddaddr2" href="#"></a></li>
+                  <li><a id="ddaddr3" href="#"></a></li>
+                  <li><a id="ddaddr4" href="#"></a></li>
+                  <li><a id="ddaddr5" href="#"></a></li>
+                  <li><a id="ddaddr6" href="#"></a></li>
+                  <li><a id="ddaddr7" href="#"></a></li>
+                  <li><a id="ddaddr8" href="#"></a></li>
+                  <li><a id="ddaddr9" href="#"></a></li>
+                </ul>
+              </div></div>
+                    <div class="input-prepend"> <span class="add-on">BTC</span><input class="span2" id="txBalance" readonly type="text"> 
+                    </div>
+                  </div>
+                </div>
+                <div class="control-group txCC">
+                  <label class="control-label" for="txDest">Destination Address</label> 
+                  <div class="controls">
+                    <input id="txDest" class="span4 txDest" type="text" placeholder="E.g. 1BountYypWttTvAJcMJVvSRDfX3TJ182To" autocomplete="off"> 
+                    <div class="input-prepend"> 
+                      <span class="add-on">BTC</span>
+                      <input class="span2" id="txValue" placeholder="E.g. 0.01" type="text" autocomplete="off"> 
+                    </div>
+                    <span class="help-inline errormsg">
+                    <button class="btn input-up" style="margin-bottom: 10px" id="txAddDest" type="button">+</button> 
+                    <button class="btn input-up" style="margin-bottom: 10px" id="txRemoveDest" type="button" disabled>&ndash;</button> 
+                    </span> 
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="txFee">Fee (Includes Miners Fee)</label> 
+                  <div class="controls">
+                    <div class="input-prepend"><span class="add-on">BTC</span><input readonly class="span2" id="txFee" type="text" value="0.0005"></div>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="txFee">You can check the payment before it is sent to the network.</label> 
+                  <div class="controls"> 
+                    <button class="btn" disabled style="margin-bottom: 10px" id="txSend" type="button">Verify and Send</button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+
+            <div id="verifyModal" class="modal hide">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h6 class="text-info">Send payment of <span id="verifyAmountTitle">0.005</span> BTC from <span id="verifySource">1BountYypWttTvAJcMJVvSRDfX3TJ182</span></h6>
+              </div>
+              <div id="verifyBody" class="modal-body">
+                <table class="table table-bordered">
+                  <thead id="verifyTable">
+                    <tr>
+                      <th>Destination Address</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tr>
+                    <td><small><span><strong>A fee of 0.0005 BTC will be added.</strong></span></small></td>
+                    <td><small><span><strong>0.0005</strong></span></small></td>
+                  </tr>
+                  <tfoot>
+                    <tr>
+                      <td><strong>Total</strong></td>
+                      <td><strong id="verifyTotal">50.05</strong> BTC</td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <p id="tx-toggle" >
+                  <a data-toggle="collapse" 
+                  data-target="#advanced-details">Show/Hide Transaction Details (Advanced users)</a>
+                </p>
+                <div id="advanced-details" class="collapse">
+                  <div class="control-group">
+                    <label class="control-label" for="txJSON">JSON Transaction</label> 
+                    <div class="controls"> 
+                      <textarea class="span5" id="txJSON" rows="4"></textarea>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label" for="txHex">Raw Transaction</label> 
+                    <div class="controls"> 
+                      <textarea class="span5" id="txHex" rows="4"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+                <button id="sendPayment" data-dismiss="modal" class="btn btn-primary">Send Payment</button>
+              </div>
+            </div>
+
+            <div id="alertModal" class="modal hide">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Response</h3>
+                </div>
+                <div class="modal-body">
+                  <p id="alertModalText"></p>
+                </div>
+                <div class="modal-footer">
+                  <a href="#" data-dismiss="modal" class="btn">Close</a>
+                </div>
+            </div>
+
+          </div>
+          <div class="span9" id="walletbackup">
+            <legend>Wallet Backup</legend>
+            <a href="#" onclick="$(this).hide(); $('#walletbackup').printElement(); $(this).show();"><i class="icon-print"></i>&nbsp;Print wallet</a>
+            <h5 id="passwallet"></h5>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Private Keys</th>
+                  <th></th>
+                  <th>Addresses</th>
+                </tr>
+              </thead>
+              <tr>
+                <td><span id="prvqr0"></span></td>
+                <td><span id="prvk0"></span></td>
+                <td><span id="addrqr0"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr1"></span></td>
+                <td><span id="prvk1"></span></td>
+                <td><span id="addrqr1"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr2"></span></td>
+                <td><span id="prvk2"></span></td>
+                <td><span id="addrqr2"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr3"></span></td>
+                <td><span id="prvk3"></span></td>
+                <td><span id="addrqr3"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr4"></span></td>
+                <td><span id="prvk4"></span></td>
+                <td><span id="addrqr4"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr5"></span></td>
+                <td><span id="prvk5"></span></td>
+                <td><span id="addrqr5"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr6"></span></td>
+                <td><span id="prvk6"></span></td>
+                <td><span id="addrqr6"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr7"></span></td>
+                <td><span id="prvk7"></span></td>
+                <td><span id="addrqr7"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr8"></span></td>
+                <td><span id="prvk8"></span></td>
+                <td><span id="addrqr8"></span></td>
+              </tr>
+              <tr>
+                <td><span id="prvqr9"></span></td>
+                <td><span id="prvk9"></span></td>
+                <td><span id="addrqr9"></span></td>
+              </tr>
+            </table>
+          </div>
+          <div class="span9" id="signmsg">
+            <form action="/" class="form-horizontal" id="sgForm" method="get" name="sgForm">
+            <fieldset>
+              <legend>Sign Message</legend>
+                <div class="control-group">
+                  <label class="control-label" for="sgddaddrt">Sign from address</label> 
+                  <div class="controls">
+                    <div class="btn-group">
+                <div class="input-append"><input class="span4" id="sgddaddrt" readonly type="text" data-toggle="dropdown"> <a class="add-on btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>  
+                <ul class="dropdown-menu">
+                  <li><a id="sgddaddr0" href="#"></a></li>
+                  <li><a id="sgddaddr1" href="#"></a></li>
+                  <li><a id="sgddaddr2" href="#"></a></li>
+                  <li><a id="sgddaddr3" href="#"></a></li>
+                  <li><a id="sgddaddr4" href="#"></a></li>
+                  <li><a id="sgddaddr5" href="#"></a></li>
+                  <li><a id="sgddaddr6" href="#"></a></li>
+                  <li><a id="sgddaddr7" href="#"></a></li>
+                  <li><a id="sgddaddr8" href="#"></a></li>
+                  <li><a id="sgddaddr9" href="#"></a></li>
+                </ul>
+              </div></div>
+                  </div>
+                </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label" for="sgMsg">Message</label>
+                <div class="col-lg-10 controls">
+                  <textarea class="span7 form-control" id="sgMsg" rows="5" spellcheck="false"></textarea>
+                </div>
+              </div><br>
+              <div class="form-group">
+                <label class="col-lg-2 control-label" for="sgSig">Signed Message</label>
+                <div class="col-lg-10 controls">
+                  <textarea class="span7 form-control" id="sgSig" readonly="readonly" rows="10" spellcheck="false"></textarea>
+                </div>
+              </div><br>
+              <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10 controls">
+                  <button class="btn btn-default" id="sgSign" type="button">Sign Message</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-pane fade in" id="verifmsg">
+            <form action="/" class="form-horizontal" id="vrForm" method="get" name="vrForm">
+            <fieldset>
+              <legend>Verify Message</legend><br>
+              <div class="hidden">
+                <div class="col-lg-offset-2 col-lg-10 alert alert-success fade in" id="vrSuccess">
+                  <button aria-hidden="true" class="close" data-dismiss="alert" type="button">&times;</button> Message verified to be from <span id="vrAddr"></span>
+                </div>
+                <div class="col-lg-offset-2 col-lg-10 alert alert-danger fade in" id="vrError">
+                  <button aria-hidden="true" class="close" data-dismiss="alert" type="button">&times;</button> Message failed to verify!
+                </div>
+                <div class="col-lg-offset-2 col-lg-10 alert alert-warning fade in" id="vrWarning">
+                  <button aria-hidden="true" class="close" data-dismiss="alert" type="button">&times;</button> Message verified to be from <span id="vrAddr"></span> (address was not found in the signature!)
+                </div>
+              </div>
+              <div id="vrAlert"></div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label" for="vrSig">Signed Message</label>
+                <div class="col-lg-10 controls">
+                  <textarea class="span9 form-control" id="vrSig" rows="17" spellcheck="false">-----BEGIN BITCOIN SIGNED MESSAGE-----
+This is an example of a signed message.
+-----BEGIN SIGNATURE-----
+<insert address here (optional)>
+Gyk26Le4ER0EUvZiFGUCXhJKWVEoTtQNU449puYZPaiUmYyrcozt2LuAMgLvnEgpoF6cw8ob9Mj/CjP9ATydO1k=
+-----END BITCOIN SIGNED MESSAGE-----</textarea>
+                </div>
+              </div><br>
+              <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-10 controls">
+                  <button class="btn btn-default" id="vrVerify" type="button">Verify Message</button>&nbsp;&nbsp;<strong><span class="help-inline errormsg" id="vrRes">&nbsp;</span></strong>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+      </div>
+      <div class="tab-pane fade in" id="faqpage">
+        <legend>Legal Notice</legend><br>
+        <p><strong>Disclaimer</strong><br>
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><br><br>
+      </div>
+
+    </div>
+    <footer>
+      <p><strong>JsBitcoin &copy; 2013</strong><br><a href="#" onclick="$('#faq').click();">Legal Disclaimer</a></p>
+      <p><small><br> 
+        </small>
+      </p>
+    </footer>
+  </body>
+</html>
